@@ -11,6 +11,7 @@
 #endif
 using namespace std;
 
+GLuint tex;
 static int num_faces = 4;
 static float cam_offsetX = 0;
 static float cam_offsetY = -0.50;
@@ -26,6 +27,7 @@ float rotation;
 bool tru = true;
 /* GLUT callback Handlers */
 
+
 static void resize( int width, int height)
 {
     const float ar = ( float ) width / ( float ) height;
@@ -37,6 +39,22 @@ static void resize( int width, int height)
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity() ;
+}
+
+void make_tex(void)
+{
+    unsigned char data[256][256][3];
+    for (int y = 0; y < 255; y++) {
+        for (int x = 0; x < 255; x++) {
+            unsigned char *p = data[y][x];
+            p[0] = p[1] = p[2] = (x ^ y) & 8 ? 255 : 0;
+        }
+    }
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, (const GLvoid *) data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 static void display( void )
@@ -102,14 +120,13 @@ static void display( void )
                 offset = (z_end * 1.0f);
                 glBegin(GL_QUAD_STRIP);
                 glNormal3f(0.0f, 0.0f, 1.0f);
-//                glBindTexture(GL_TEXTURE_2D, "hi");
-                glColor3f(255.0,255.0,250.0);
+                glBindTexture(GL_TEXTURE_2D, tex);
+                glColor3f(255.0,255.0,255.0);
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'a');
                 glTexCoord2f(3.0, 3.0); glVertex3f(x_start, y_start, start );
                 glTexCoord2f(0.0, 3.0); glVertex3f(x_end, y_end, start);
                 glTexCoord2f(0.0, 0.0); glVertex3f(x_start, y_start, offset);
                 glTexCoord2f(3.0, 0.0); glVertex3f(x_end, y_end, offset);
-                glRasterPos2d((x_start+x_end)/2, (y_start+y_end)/2);
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,'Ig');
                 glEnd();
             if(j == 3){
                 j = 0;
@@ -117,7 +134,7 @@ static void display( void )
                 j++;
             }
                 y+=0.2;
-            
+
             glPopMatrix();
         }
         glPopMatrix();
@@ -230,6 +247,13 @@ void mouseButton(int button, int state, int x, int y) {
     }
 }
 
+void init(void)
+{
+    glEnable(GL_DEPTH_TEST);
+    make_tex();
+    glEnable(GL_TEXTURE_2D);
+}
+
 static void idle( void )
 {
     glutPostRedisplay();
@@ -282,8 +306,8 @@ int main( int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-//    glutMouseFunc(mouseButton);
     glutMotionFunc(mouseMove);
+    init();
     glutMainLoop();
     
     return EXIT_SUCCESS;
