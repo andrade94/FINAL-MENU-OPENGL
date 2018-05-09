@@ -18,43 +18,6 @@ float x=0.0f,z=7.0f, y = 1.0f;
 float lx=0.0f, lz=-3.0f, ly = 0.0f;
 /* GLUT callback Handlers */
 
-void exportTo(){
-    ofstream output;
-    output.open("prueba.txt");
-    int indices[num_faces * 4];
-    int i = 0, j;
-    for (j = 0; j < num_faces; j++){
-        float x_start = sin(M_PI * 2.0f * i / num_faces);
-        float y_start = cos(M_PI * 2.0f * i / num_faces);
-        float z_start = 0.0f;
-        float x_end = sin(M_PI * 2.0f * (i + 1) / num_faces);
-        float y_end = cos(M_PI * 2.0f * (i + 1) / num_faces);
-        float z_end = -1;
-        // Bottom left corner
-        output << "v " << x_start << " " << y_start << " " << z_start << endl;
-        indices[i] = i;
-        i++;
-        // Bottom right corner
-        output << "v " << x_end << " " << y_end << " " << z_start << endl;
-        indices[i] = i;
-        i++;
-        // Top left corner
-        output << "v " << x_start << " " << y_start << " " << z_end << endl;
-        indices[i] = i;
-        i++;
-        // Top right corner
-        output << "v " << x_end << " " << y_end << " " << z_end << endl;
-        indices[i] = i;
-        i++;
-    }
-    output << "f " << indices[0] + 1 << " " << indices[1] + 1 << " " << indices[2] + 1 << endl;
-    
-    for(int i = 3; i < num_faces * 4; i++){
-        output << "f " << indices[i - 2] + 1 << " " << indices[i - 1] + 1 << " " << indices[i] + 1 << endl;
-    }
-    output.close();
-}
-
 static void resize( int width, int height)
 {
     const float ar = ( float ) width / ( float ) height;
@@ -80,7 +43,6 @@ static void display( void )
         glRotated(90,1,0,0);
         glRotated(a,0,0,1);
         glPushMatrix();
-            // GL Line Loop for Bottom
             glBegin(GL_LINE_LOOP);
             float height = -1 * 1;
             for(int i = 0; i < num_faces; i++)
@@ -91,7 +53,6 @@ static void display( void )
         glPopMatrix();
     
         glPushMatrix();
-            // GL Line Loop for Top
             glBegin(GL_LINE_LOOP);
             for(int i = 0; i < num_faces; i++)
             {
@@ -102,7 +63,6 @@ static void display( void )
     
     
         glPushMatrix();
-        // GL Line Loop for sides
         for(int i = 0; i < num_faces; i++)
         {
             glBegin(GL_LINE_LOOP);
@@ -113,7 +73,6 @@ static void display( void )
         glPopMatrix();
     
         glPushMatrix();
-        // Dynamic face creation
         int j = 0, y = 1;
         for (int i = 0; i < num_faces; i++){
             float x_start = sin(M_PI * 2.0f * i / num_faces);
@@ -195,6 +154,43 @@ void mouseMove(int x, int y) {
     // this will only be true when the left button is down
     ly += 1;
     lx += 2;
+}
+
+void exportTo(){
+    ofstream output;
+    output.open("prueba.txt");
+    int indices[num_faces * 4];
+    int i = 0, j;
+    for (j = 0; j < num_faces; j++){
+        float x_start = sin(M_PI * 2.0f * i / num_faces);
+        float y_start = cos(M_PI * 2.0f * i / num_faces);
+        float z_start = 0.0f;
+        float x_end = sin(M_PI * 2.0f * (i + 1) / num_faces);
+        float y_end = cos(M_PI * 2.0f * (i + 1) / num_faces);
+        float z_end = -1;
+        // bottom left corner
+        output << "v " << x_start << " " << y_start << " " << z_start << endl;
+        indices[i] = i;
+        i++;
+        // bottom right corner
+        output << "v " << x_end << " " << y_end << " " << z_start << endl;
+        indices[i] = i;
+        i++;
+        // top left corner
+        output << "v " << x_start << " " << y_start << " " << z_end << endl;
+        indices[i] = i;
+        i++;
+        // top right corner
+        output << "v " << x_end << " " << y_end << " " << z_end << endl;
+        indices[i] = i;
+        i++;
+    }
+    output << "f " << indices[0] + 1 << " " << indices[1] + 1 << " " << indices[2] + 1 << endl;
+    
+    for(int i = 3; i < num_faces * 4; i++){
+        output << "f " << indices[i - 2] + 1 << " " << indices[i - 1] + 1 << " " << indices[i] + 1 << endl;
+    }
+    output.close();
 }
 
 static void idle( void )
