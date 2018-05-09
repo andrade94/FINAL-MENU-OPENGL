@@ -11,11 +11,19 @@
 #endif
 using namespace std;
 
-static int num_faces = 5;
-static int cam_offsetX = -2;
-static int cam_offsetY = 0;
+static int num_faces = 4;
+static float cam_offsetX = 0;
+static float cam_offsetY = -0.50;
 float x=0.0f,z=7.0f, y = 1.0f;
 float lx=0.0f, lz=-3.0f, ly = 0.0f;
+float angle = 90.0f;
+float deltaAngle = 0.0f;
+int xOrigin = 1;
+float offs1 = 0;
+float offs2 = 0;
+float rati = 90.0;
+float rotation;
+bool tru = true;
 /* GLUT callback Handlers */
 
 static void resize( int width, int height)
@@ -34,14 +42,19 @@ static void resize( int width, int height)
 static void display( void )
 {
     const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-    const double a = t*90.0;
+    const double a = t*rati;
+    if(tru){
+        rotation = a;
+    } else {
+        rotation = rotation;
+    }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3d(1,0,0);
+    glColor3d(1,1,1);
     
     glPushMatrix();
-        glTranslated(cam_offsetX,cam_offsetY,-6);
+        glTranslated(cam_offsetX,cam_offsetY,-3);
         glRotated(90,1,0,0);
-        glRotated(a,0,0,1);
+        glRotated(rotation,0,0,1);
         glPushMatrix();
             glBegin(GL_LINE_LOOP);
             float height = -1 * 1;
@@ -89,11 +102,14 @@ static void display( void )
                 offset = (z_end * 1.0f);
                 glBegin(GL_QUAD_STRIP);
                 glNormal3f(0.0f, 0.0f, 1.0f);
-                glColor3f(y,j,0);
+//                glBindTexture(GL_TEXTURE_2D, "hi");
+                glColor3f(255.0,255.0,250.0);
                 glTexCoord2f(3.0, 3.0); glVertex3f(x_start, y_start, start );
                 glTexCoord2f(0.0, 3.0); glVertex3f(x_end, y_end, start);
                 glTexCoord2f(0.0, 0.0); glVertex3f(x_start, y_start, offset);
                 glTexCoord2f(3.0, 0.0); glVertex3f(x_end, y_end, offset);
+                glRasterPos2d((x_start+x_end)/2, (y_start+y_end)/2);
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,'Ig');
                 glEnd();
             if(j == 3){
                 j = 0;
@@ -113,7 +129,7 @@ static void display( void )
 
 void exportTo(){
     ofstream output;
-    output.open("prueba.txt");
+    output.open("IWall.obj");
     int indices[num_faces * 4];
     int i = 0, j;
     for (j = 0; j < num_faces; j++){
@@ -168,29 +184,50 @@ static void key(unsigned char key, int x, int y)
             }
             break ;
         case 'l' :
-            cam_offsetX -= 1;
+            cam_offsetX -= 0.2;
             break;
         case 'r' :
-            cam_offsetX += 1;
+            cam_offsetX += 0.2;
             break;
         case 'u' :
-            cam_offsetY += 1;
+            cam_offsetY += 0.2;
             break;
         case 'd' :
-            cam_offsetY -= 1;
+            cam_offsetY -= 0.2;
             break;
         case 'm' :
             exportTo();
             break;
+        case 'k' :
+            lx += 1;
+            ly -= 1;
+            break;
+        case 's' :
+            tru = !tru;
     }
     
     glutPostRedisplay();
 }
 
+
 void mouseMove(int x, int y) {
     // this will only be true when the left button is down
-    ly += 1;
-    lx += 2;
+    cam_offsetX += x * .0001f;
+    cam_offsetY += y * .0001f;
+}
+
+void mouseButton(int button, int state, int x, int y) {
+    // only start motion if the left button is pressed
+    if (button == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_UP) {
+            cam_offsetX += offs1 + .00001f;
+            cam_offsetY += offs2 + .00001f;
+        }
+        else  {// state = GLUT_DOWN
+            cam_offsetX = x;
+            cam_offsetY = y;
+        }
+    }
 }
 
 static void idle( void )
@@ -218,9 +255,7 @@ int main( int argc, char *argv[])
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     
     glutCreateWindow( "Infinite Menu" );
-    gluLookAt(x, y, z,
-              x + lx, y + ly, z + lz,
-              0.0f, 1.0f, 0.0f);
+
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
@@ -247,6 +282,7 @@ int main( int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+//    glutMouseFunc(mouseButton);
     glutMotionFunc(mouseMove);
     glutMainLoop();
     
