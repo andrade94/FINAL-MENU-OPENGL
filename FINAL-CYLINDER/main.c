@@ -1,18 +1,17 @@
+#include <stdlib.h>
+#include <math.h>
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
 
-#include <stdlib.h>
-#include <math.h>
-
 static int num_faces = 5;
-static int off_color1 = 1;
-static int off_color2 = 2;
-static int off_color3 = 3;
-
+static int cam_offsetX = -2;
+static int cam_offsetY = 0;
 /* GLUT callback Handlers */
+
 
 static void resize( int width, int height)
 {
@@ -35,7 +34,7 @@ static void display( void )
     glColor3d(1,0,0);
     
     glPushMatrix();
-        glTranslated(-2,1.2,-6);
+        glTranslated(cam_offsetX,cam_offsetY,-6);
         glRotated(90,1,0,0);
         glRotated(a,0,0,1);
         glPushMatrix();
@@ -130,6 +129,18 @@ static void key(unsigned char key, int x, int y)
                 num_faces--;
             }
             break ;
+        case 'l' :
+            cam_offsetX -= 1;
+            break;
+        case 'r' :
+            cam_offsetX += 1;
+            break;
+        case 'u' :
+            cam_offsetY += 1;
+            break;
+        case 'd' :
+            cam_offsetY -= 1;
+            break;
     }
     
     glutPostRedisplay();
