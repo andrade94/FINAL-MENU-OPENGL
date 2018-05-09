@@ -1,17 +1,59 @@
 #include <stdlib.h>
 #include <math.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
+using namespace std;
 
 static int num_faces = 5;
 static int cam_offsetX = -2;
 static int cam_offsetY = 0;
+float x=0.0f,z=7.0f, y = 1.0f;
+float lx=0.0f, lz=-3.0f, ly = 0.0f;
 /* GLUT callback Handlers */
 
+void exportTo(){
+    ofstream output;
+    output.open("prueba.txt");
+    int indices[num_faces * 4];
+    int i = 0, j;
+    for (j = 0; j < num_faces; j++){
+        float x_start = sin(M_PI * 2.0f * i / num_faces);
+        float y_start = cos(M_PI * 2.0f * i / num_faces);
+        float z_start = 0.0f;
+        float x_end = sin(M_PI * 2.0f * (i + 1) / num_faces);
+        float y_end = cos(M_PI * 2.0f * (i + 1) / num_faces);
+        float z_end = -1;
+        // Bottom left corner
+        output << "v " << x_start << " " << y_start << " " << z_start << endl;
+        indices[i] = i;
+        i++;
+        // Bottom right corner
+        output << "v " << x_end << " " << y_end << " " << z_start << endl;
+        indices[i] = i;
+        i++;
+        // Top left corner
+        output << "v " << x_start << " " << y_start << " " << z_end << endl;
+        indices[i] = i;
+        i++;
+        // Top right corner
+        output << "v " << x_end << " " << y_end << " " << z_end << endl;
+        indices[i] = i;
+        i++;
+    }
+    output << "f " << indices[0] + 1 << " " << indices[1] + 1 << " " << indices[2] + 1 << endl;
+    
+    for(int i = 3; i < num_faces * 4; i++){
+        output << "f " << indices[i - 2] + 1 << " " << indices[i - 1] + 1 << " " << indices[i] + 1 << endl;
+    }
+    output.close();
+}
 
 static void resize( int width, int height)
 {
@@ -141,9 +183,18 @@ static void key(unsigned char key, int x, int y)
         case 'd' :
             cam_offsetY -= 1;
             break;
+        case 'm' :
+            exportTo();
+            break;
     }
     
     glutPostRedisplay();
+}
+
+void mouseMove(int x, int y) {
+    // this will only be true when the left button is down
+    ly += 1;
+    lx += 2;
 }
 
 static void idle( void )
@@ -171,7 +222,9 @@ int main( int argc, char *argv[])
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     
     glutCreateWindow( "Infinite Menu" );
-    
+    gluLookAt(x, y, z,
+              x + lx, y + ly, z + lz,
+              0.0f, 1.0f, 0.0f);
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
@@ -198,7 +251,7 @@ int main( int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-    
+    glutMotionFunc(mouseMove);
     glutMainLoop();
     
     return EXIT_SUCCESS;

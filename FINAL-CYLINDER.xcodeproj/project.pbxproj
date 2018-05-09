@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		40B20CF820A2F08600ACE49B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 40B20CF720A2F08600ACE49B /* main.c */; };
+		404E053720A30DDE00A05070 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404E053620A30DDE00A05070 /* main.cpp */; };
 		40B20D0020A2F09500ACE49B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B20CFF20A2F09500ACE49B /* OpenGL.framework */; };
 		40B20D0220A2F09900ACE49B /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B20D0120A2F09900ACE49B /* GLUT.framework */; };
 /* End PBXBuildFile section */
@@ -25,8 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		404E053620A30DDE00A05070 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		40B20CF420A2F08600ACE49B /* FINAL-CYLINDER */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "FINAL-CYLINDER"; sourceTree = BUILT_PRODUCTS_DIR; };
-		40B20CF720A2F08600ACE49B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		40B20CFF20A2F09500ACE49B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		40B20D0120A2F09900ACE49B /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -64,7 +64,7 @@
 		40B20CF620A2F08600ACE49B /* FINAL-CYLINDER */ = {
 			isa = PBXGroup;
 			children = (
-				40B20CF720A2F08600ACE49B /* main.c */,
+				404E053620A30DDE00A05070 /* main.cpp */,
 			);
 			path = "FINAL-CYLINDER";
 			sourceTree = "<group>";
@@ -134,7 +134,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40B20CF820A2F08600ACE49B /* main.c in Sources */,
+				404E053720A30DDE00A05070 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
