@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		40B20CF820A2F08600ACE49B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 40B20CF720A2F08600ACE49B /* main.c */; };
+		40B20D0020A2F09500ACE49B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B20CFF20A2F09500ACE49B /* OpenGL.framework */; };
+		40B20D0220A2F09900ACE49B /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B20D0120A2F09900ACE49B /* GLUT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		40B20CF420A2F08600ACE49B /* FINAL-CYLINDER */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "FINAL-CYLINDER"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40B20CF720A2F08600ACE49B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		40B20CFF20A2F09500ACE49B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		40B20D0120A2F09900ACE49B /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40B20D0220A2F09900ACE49B /* GLUT.framework in Frameworks */,
+				40B20D0020A2F09500ACE49B /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +49,7 @@
 			children = (
 				40B20CF620A2F08600ACE49B /* FINAL-CYLINDER */,
 				40B20CF520A2F08600ACE49B /* Products */,
+				40B20CFE20A2F09500ACE49B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +67,15 @@
 				40B20CF720A2F08600ACE49B /* main.c */,
 			);
 			path = "FINAL-CYLINDER";
+			sourceTree = "<group>";
+		};
+		40B20CFE20A2F09500ACE49B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40B20D0120A2F09900ACE49B /* GLUT.framework */,
+				40B20CFF20A2F09500ACE49B /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -246,6 +263,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
